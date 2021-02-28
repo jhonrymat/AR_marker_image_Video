@@ -6,6 +6,30 @@
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script>
+      AFRAME.registerComponent("videohandler", {
+        init: function() {
+          var marker = this.el;
+          this.vid = document.querySelector("#vid");
+
+          marker.addEventListener(
+            "markerFound",
+            function() {
+              this.toggle = true;
+              this.vid.play();
+            }.bind(this)
+          );
+
+          marker.addEventListener(
+            "markerLost",
+            function() {
+              this.toggle = false;
+              this.vid.pause();
+            }.bind(this)
+          );
+        }
+      });
+    </script>
   </head>
 
   <body style="margin: 0; overflow: hidden;">
@@ -23,6 +47,18 @@
           id="animated-asset"
           src="https://cdn.glitch.com/cbc24da2-5db2-4f18-af33-b7c31480f5c3%2Fasset.gltf?v=1614459004165"
         ></a-asset-item>
+        <video
+          id="vid"
+          src="https://cdn.glitch.com/cbc24da2-5db2-4f18-af33-b7c31480f5c3%2Fhombre%20de%20negocios%20sosteniendo%20tableta%20holograma%20hud%20proyecci%C3%B3n%20scam%20cryptocurrency%20icono%20-%20%C2%A1Clips%20y%20V%C3%ADdeos%20HD%20de%20Gratis%20en%20Videezy!.mp4?v=1614470381163"
+          preload="auto"
+          response-type="arraybuffer"
+          loop
+          crossorigin
+          webkit-playsinline
+          autoplay
+          muted
+          playsinline
+        ></video>
       </a-assets>
 
       <a-marker
@@ -30,15 +66,35 @@
         type="pattern"
         preset="custom"
         url="https://cdn.glitch.com/cbc24da2-5db2-4f18-af33-b7c31480f5c3%2Fmarker.patt?v=1614458913700"
+        videohandler
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance="0.01"
+        smoothThreshold="5"
         raycaster="objects: .clickable"
         emitevents="true"
         cursor="fuse: false; rayOrigin: mouse;"
         id="markerA"
       >
+        <a-image
+          src="https://cdn.glitch.com/cbc24da2-5db2-4f18-af33-b7c31480f5c3%2Fasset.png?v=1614469105603"
+          scale="1 1 1"
+          position="1 0 0"
+          class="clickable"
+          rotation="-90 0 0"
+        ></a-image>
+        <a-video
+          src="#vid"
+          scale="1 1 1"
+          position="0 0.1 0"
+          rotation="-90 0 0"
+          class="clickable"
+        ></a-video>
         <a-entity
           id="bowser-model"
           scale="0.9999999974988789 0.9999999974988789 0.9999999974988789"
           rotation="90 0 0"
+          position="-1 0 0"
           animation-mixer="loop: repeat"
           gltf-model="#animated-asset"
           class="clickable"
